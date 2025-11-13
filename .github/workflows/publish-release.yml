@@ -105,6 +105,10 @@ jobs:
         ref: ${{ needs.publish.outputs.tag }}
         fetch-depth: 0
         fetch-tags: true
+    - name: Install cosign
+      uses: sigstore/cosign-installer@v3.3.0
+      with:
+        cosign-release: 'v2.2.3'
 
     - name: Set up QEMU
       uses: docker/setup-qemu-action@v3
@@ -113,12 +117,18 @@ jobs:
       id: buildx
       uses: docker/setup-buildx-action@v3
 
-    - name: Login to quay.io
+    - name: Log into registry ${{ env.REGISTRY }}
       uses: docker/login-action@v3
       with:
-        registry: quay.io/oauth2-proxy
-        username: ${{ secrets.REGISTRY_USERNAME }}
-        password: ${{ secrets.REGISTRY_PASSWORD }}
+        registry: ${{ env.REGISTRY }}
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+    
+    - name: Extract Docker metadata
+      id: meta
+      uses: docker/metadata-action@v5
+      with:
+        images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
 
     - name: Build images
       run: |
@@ -127,3 +137,12 @@ jobs:
     - name: Push images
       run: |
         make push-docker-all
+        
+    - name: Sign the published Docker image
+      env:
+        # https://docs.github.com/en/actions/security-guides/security-hardening-for-github-actions#using-an-intermediate-environment-variable
+        TAGS: ${{ steps.meta.outputs.tags }}
+        DIGEST: ${{ steps.build-and-push.outputs.digest }}
+      # This step uses the identity token to provision an ephemeral certificate
+      # against the sigstore community Fulcio instance.
+      run: echo "${TAGS}" | xargs -I {} cosign sign --yes {}@${DIGEST}
