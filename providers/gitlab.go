@@ -162,7 +162,7 @@ func (p *GitLabProvider) getUserinfo(ctx context.Context, s *sessions.SessionSta
 
 	// Build user info url from login url of GitLab instance
 	userinfoURL := *p.LoginURL
-	userinfoURL.Path = *p.LoginURL.Path + "/oauth/userinfo"
+	userinfoURL.Path = p.LoginURL.Path + "/oauth/userinfo"
 
 	var userinfo gitlabUserinfo
 	err := requests.New(userinfoURL.String()).
@@ -239,7 +239,7 @@ func (p *GitLabProvider) getProjectInfo(ctx context.Context, s *sessions.Session
 	var projectInfo gitlabProjectInfo
 
 	endpointURL := *p.LoginURL
-        endpointURL.Path := *p.LoginURL.Path + "/api/v4/projects/"
+        endpointURL.Path := p.LoginURL.Path + "/api/v4/projects/"
 
 	err := requests.New(fmt.Sprintf("%s%s", endpointURL.String(), url.QueryEscape(project))).
 		WithContext(ctx).
