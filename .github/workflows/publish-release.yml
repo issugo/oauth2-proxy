@@ -11,6 +11,8 @@ on:
 permissions:
   contents: write
   pull-requests: write
+  id-token: write
+  packages: write
 
 env:
   # Use docker.io for Docker Hub if empty
@@ -22,12 +24,6 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       tag: ${{ steps.tag.outputs.version }}
-    permissions:
-      contents: read
-      packages: write
-      # This is used to complete the identity challenge
-      # with sigstore/fulcio when running outside of PRs.
-      id-token: write
     steps:
     - name: Check out code
       uses: actions/checkout@v5
@@ -108,12 +104,6 @@ jobs:
   docker:
     needs: publish
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
-      # This is used to complete the identity challenge
-      # with sigstore/fulcio when running outside of PRs.
-      id-token: write
     steps:
     - name: Check out code
       uses: actions/checkout@v5
