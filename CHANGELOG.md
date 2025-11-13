@@ -6,6 +6,16 @@
 
 ## Breaking Changes
 
+## Changes since v7.13.2-custom
+
+# V7.13.2-custom
+
+## Release Highlights
+
+## Important Notes
+
+## Breaking Changes
+
 ## Changes since v7.13.1-custom
 
 # V7.13.1-custom
