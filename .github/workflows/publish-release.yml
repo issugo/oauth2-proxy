@@ -10,6 +10,7 @@ on:
 
 permissions:
   contents: write
+  packages: write
   pull-requests: write
   id-token: write
 
@@ -74,7 +75,8 @@ jobs:
 
     - name: Create release
       env:
-        GH_TOKEN: ${{ github.token }}
+        # GH_TOKEN: ${{ github.token }}
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
         # Get version from tag
         version=$(git describe --tags --abbrev=0)
