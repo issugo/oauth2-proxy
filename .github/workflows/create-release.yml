@@ -100,8 +100,8 @@ jobs:
       run: |
         VERSION=${{ steps.validate.outputs.version }}
         cd contrib
-        grep -rl "quay.io/oauth2-proxy/oauth2-proxy:" | \
-          xargs sed -i "s#quay.io/oauth2-proxy/oauth2-proxy:v[0-9]\+\.[0-9]\+\.[0-9]\+#quay.io/oauth2-proxy/oauth2-proxy:v${VERSION}#g"
+        grep -rl "ghcr.io/issugo/oauth2-proxy:" | \
+          xargs sed -i "s#ghcr.io/issugo/oauth2-proxy:v[0-9]\+\.[0-9]\+\.[0-9]\+#ghcr.io/issugo/oauth2-proxy:v${VERSION}#g"
 
     - name: Commit and push
       run: |
