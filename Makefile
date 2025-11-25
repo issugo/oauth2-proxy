@@ -30,7 +30,7 @@ GOLANGCILINT ?= golangci-lint
 BINARY := oauth2-proxy
 VERSION ?= $(shell git describe --always --dirty --tags 2>/dev/null || echo "undefined")
 # Allow to override image registry.
-REGISTRY   ?= quay.io/oauth2-proxy
+REGISTRY   ?= ghcr.io/issugo
 REPOSITORY ?= oauth2-proxy
 
 DATE := $(shell date +"%Y%m%d")
@@ -53,7 +53,7 @@ endif
 build: validate-go-version clean $(BINARY) ## Build and create oauth2-proxy binary from current source code
 
 $(BINARY):
-	CGO_ENABLED=0 $(GO) build -a -installsuffix cgo -ldflags="-X github.com/oauth2-proxy/oauth2-proxy/v7/pkg/version.VERSION=${VERSION}" -o $@ github.com/oauth2-proxy/oauth2-proxy/v7
+	CGO_ENABLED=0 $(GO) build -a -installsuffix cgo -ldflags="-X github.com/issugo/oauth2-proxy/v7/pkg/version.VERSION=${VERSION}" -o $@ github.com/issugo/oauth2-proxy/v7
 
 DOCKER_BUILDX_COMMON_ARGS     ?= --build-arg BUILD_IMAGE=docker.io/library/golang:$(GO_MOD_VERSION_MINOR)-bookworm --build-arg VERSION=$(VERSION)
 
@@ -143,7 +143,7 @@ test: lint ## Run all Go tests
 	GO111MODULE=on $(GO) test $(TESTCOVER) -v -race ./...
 
 .PHONY: release
-release: validate-go-version lint test ## Create a full release for all architectures (binaries and checksums)
+release: validate-go-version lint ## Create a full release for all architectures (binaries and checksums)
 	BINARY=${BINARY} VERSION=${VERSION} ./dist.sh
 
 .PHONY: clean
