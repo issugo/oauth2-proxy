@@ -40,12 +40,6 @@ jobs:
           exit 1
         fi
 
-        # check version continuity
-        if [ ! $(ver $LATEST_VERSION) -lt $(ver $NEW_VERSION) ]; then
-          echo "::error::Entered version '${{ inputs.version }}' is smaller then latest version $LATEST_VERSION"
-          exit 1
-        fi
-
         echo "version=${NEW_VERSION}" >> "$GITHUB_OUTPUT"
 
     - name: Prepare Github Actions Bot
