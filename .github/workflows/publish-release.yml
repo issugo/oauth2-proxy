@@ -89,14 +89,14 @@ jobs:
         git push origin "${version}"
 
         # Create github release
-        gh release create "${version}" \
-          --title "${version}" \
-          --notes "${notes}" \
-          --prerelease
+        #gh release create "${version}" \
+        #  --title "${version}" \
+        #  --notes "${notes}" \
+        #  --prerelease
         
         # Upload artifacts
-        gh release upload "${version}" release/*.tar.gz
-        gh release upload "${version}" release/*.txt
+        #gh release upload "${version}" release/*.tar.gz
+        #gh release upload "${version}" release/*.txt
   
   docker:
     needs: publish
