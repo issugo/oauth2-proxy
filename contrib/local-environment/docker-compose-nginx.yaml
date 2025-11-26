@@ -22,7 +22,7 @@
 version: '3.0'
 services:
   oauth2-proxy:
-    image: ghcr.io/issugo/oauth2-proxy:v7.13.0-custom-custom-custom
+    image: ghcr.io/issugo/oauth2-proxy:v7.13.0-custom-custom-custom-custom
     ports: []
     hostname: oauth2-proxy
     container_name: oauth2-proxy
